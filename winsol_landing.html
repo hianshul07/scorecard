@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinSol Hybrid — Powering India's Self-Reliance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET & TOKENS ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #080b0e;
+  --deep:    #0d1117;
+  --card:    #111820;
+  --border:  #1e2a34;
+  --muted:   #3a4a58;
+  --smoke:   #8a9bab;
+  --white:   #eef2f5;
+  --gold:    #d4962a;
+  --gold-lt: #e8b84a;
+  --teal:    #2ab5a0;
+  --teal-dk: #1a7a6e;
+  --red-ind: #e8533a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ──────────────────────────────────────────── */
+.cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(212,150,42,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease-out, width 0.25s, height 0.25s;
+}
+body:hover .cursor { opacity: 1; }
+
+/* ─── GRAIN OVERLAY ──────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 3.5rem;
+  background: rgba(8,11,14,0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 0.4s, background 0.4s;
+}
+nav.scrolled {
+  background: rgba(8,11,14,0.92);
+  border-color: var(--border);
+}
+.nav-logo {
+  display: flex; align-items: baseline; gap: 0.5rem;
+  text-decoration: none;
+}
+.nav-logo-main {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 1.5rem;
+  letter-spacing: 0.12em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo-main .win { color: #7eb8d4; }
+.nav-logo-main .sol { color: #e8c97a; }
+.nav-logo-sub {
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--smoke);
+}
+.nav-links {
+  display: flex; align-items: center; gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--smoke); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--gold); color: var(--black) !important;
+  padding: 0.55rem 1.4rem; font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--gold-lt) !important; color: var(--black) !important; }
+
+/* ─── HERO ───────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  position: relative; overflow: hidden;
+  padding: 8rem 3.5rem 0;
+}
+
+/* animated grid lines */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(212,150,42,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,150,42,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: gridDrift 30s linear infinite;
+}
+@keyframes gridDrift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 80px 80px; }
+}
+
+/* radial glow */
+.hero-glow {
+  position: absolute;
+  top: 30%; left: 55%;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(42,181,160,0.09) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  top: 60%; left: 25%;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,150,42,0.07) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* corner accents */
+.hero-corner {
+  position: absolute; top: 5rem; right: 3.5rem;
+  display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-end;
+}
+.hero-corner span {
+  display: block; height: 1px; background: var(--gold);
+}
+.hero-corner span:nth-child(1) { width: 60px; }
+.hero-corner span:nth-child(2) { width: 35px; opacity: 0.5; }
+.hero-corner span:nth-child(3) { width: 15px; opacity: 0.25; }
+
+.hero-content { position: relative; z-index: 2; max-width: 1100px; width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: center; padding-bottom: 3rem; }
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--teal);
+}
+.hero-eyebrow span {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--teal);
+}
+
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(5rem, 12vw, 11rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.9s 0.35s forwards;
+}
+.hero-title .line-gold { color: var(--gold); }
+.hero-title .line-outline {
+  -webkit-text-stroke: 1.5px rgba(238,242,245,0.25);
+  color: transparent;
+}
+
+.hero-sub {
+  max-width: 600px;
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--smoke); line-height: 1.8;
+  margin-bottom: 3.5rem;
+  opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+}
+.hero-sub strong { color: var(--white); font-weight: 500; }
+
+.hero-actions {
+  display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--black);
+  padding: 1rem 2.5rem;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: none;
+  transition: background 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+.btn-ghost {
+  color: var(--smoke);
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 0.6rem;
+  transition: color 0.2s;
+}
+.btn-ghost::after {
+  content: '→';
+  transition: transform 0.2s;
+}
+.btn-ghost:hover { color: var(--white); }
+.btn-ghost:hover::after { transform: translateX(4px); }
+
+/* hero stats strip */
+.hero-stats {
+  position: relative;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  opacity: 0; animation: fadeIn 1s 1s forwards;
+}
+.hstat {
+  padding: 1.8rem 2.5rem;
+  border-right: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hstat:last-child { border-right: none; }
+.hstat::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s;
+}
+.hstat:hover::before { transform: scaleX(1); }
+.hstat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem; font-weight: 700;
+  color: var(--gold); line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.hstat-label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── SECTION BASE ───────────────────────────────────────────── */
+section { padding: 7rem 3.5rem; }
+
+.section-tag {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.section-tag::after {
+  content: ''; flex: 1; max-width: 50px;
+  height: 1px; background: var(--teal);
+}
+
+.section-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800; text-transform: uppercase;
+  line-height: 0.92; letter-spacing: 0.01em;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── TICKER STRIP ───────────────────────────────────────────── */
+.ticker-wrap {
+  background: var(--gold);
+  overflow: hidden;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.ticker-track {
+  display: flex; gap: 4rem;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+}
+.ticker-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--black);
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 1rem;
+}
+.ticker-item::before { content: '◆'; font-size: 0.5rem; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── SOVEREIGNTY SECTION ────────────────────────────────────── */
+.sovereignty { background: var(--deep); }
+.sovereignty-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.sovereignty-text .lead {
+  font-size: 1.25rem; font-weight: 300;
+  color: var(--white); line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.sovereignty-text .lead strong {
+  font-weight: 600; color: var(--gold);
+}
+.sovereignty-text p {
+  color: var(--smoke); line-height: 1.8;
+  margin-bottom: 1.25rem; font-size: 0.95rem;
+}
+.sovereignty-text p strong { color: var(--white); font-weight: 500; }
+
+/* country cards */
+.country-cards { display: flex; flex-direction: column; gap: 1px; }
+.ccard {
+  background: var(--card);
+  border-left: 3px solid transparent;
+  padding: 1.8rem 2rem;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative; overflow: hidden;
+}
+.ccard::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(212,150,42,0.04) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.ccard:hover { border-left-color: var(--gold); background: #141d26; }
+.ccard:hover::after { opacity: 1; }
+.ccard:nth-child(2) { border-left-color: rgba(42,181,160,0.3); }
+.ccard:nth-child(2):hover { border-left-color: var(--teal); }
+.ccard:nth-child(2)::after { background: linear-gradient(90deg, rgba(42,181,160,0.04) 0%, transparent 60%); }
+.ccard-flag { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.ccard-country {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.ccard-stat {
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--gold); letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+.ccard:nth-child(2) .ccard-stat { color: var(--teal); }
+.ccard p { font-size: 0.85rem; color: var(--smoke); line-height: 1.6; }
+
+/* ─── PROBLEM SECTION ────────────────────────────────────────── */
+.problem { background: var(--black); }
+.problem-inner { max-width: 1200px; margin: 0 auto; }
+.problem-header { margin-bottom: 4rem; }
+.problem-header .section-heading { max-width: 700px; }
+
+.problem-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 300; font-style: italic;
+  color: var(--white); line-height: 1.45;
+  border-left: 2px solid var(--gold);
+  padding-left: 2rem;
+  margin: 0 0 4rem;
+  max-width: 750px;
+}
+
+.problem-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+.pcard {
+  background: var(--black);
+  padding: 2.5rem 2rem;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.pcard:hover { background: var(--card); }
+.pcard-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 5rem; font-weight: 800;
+  line-height: 1;
+  position: absolute; top: 1.2rem; right: 1.5rem;
+  color: var(--border);
+  transition: color 0.3s;
+}
+.pcard:hover .pcard-num { color: #1a2530; }
+.pcard-icon { font-size: 1.8rem; margin-bottom: 1.2rem; }
+.pcard h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.15rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  color: var(--gold);
+}
+.pcard p { font-size: 0.88rem; color: var(--smoke); line-height: 1.75; }
+.pcard-data {
+  margin-top: 1.2rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--white);
+}
+.pcard-data span { font-size: 0.72rem; font-weight: 500; color: var(--smoke); display: block; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ─── PRODUCT SECTION ────────────────────────────────────────── */
+.product { background: var(--deep); }
+.product-inner { max-width: 1200px; margin: 0 auto; }
+
+.product-hero-text {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; margin-bottom: 5rem; align-items: start;
+}
+.product-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+.product-headline em { color: var(--gold); font-style: italic; }
+.product-body { color: var(--smoke); line-height: 1.8; font-size: 0.95rem; }
+.product-body p + p { margin-top: 1.25rem; }
+.product-body strong { color: var(--white); font-weight: 500; }
+
+.product-features {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+}
+.feat-card {
+  background: var(--card);
+  padding: 2.5rem 2rem;
+  border-top: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+.feat-card:hover { border-top-color: var(--gold); }
+.feat-card:nth-child(2):hover { border-top-color: var(--teal); }
+.feat-card:nth-child(3):hover { border-top-color: var(--white); }
+.feat-icon {
+  width: 44px; height: 44px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.02);
+}
+.feat-card h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.75rem; color: var(--white);
+}
+.feat-card p { font-size: 0.85rem; color: var(--smoke); line-height: 1.7; }
+
+/* uptime diagram */
+.uptime-visual {
+  margin-top: 4rem;
+  border: 1px solid var(--border);
+  padding: 3rem;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 3rem; align-items: center;
+  background: linear-gradient(135deg, rgba(212,150,42,0.03) 0%, transparent 50%);
+}
+.uptime-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7rem; font-weight: 800;
+  color: var(--gold); line-height: 0.85;
+}
+.uptime-number sub {
+  font-size: 1.5rem; font-weight: 400;
+  color: var(--smoke); vertical-align: bottom;
+  font-family: 'Barlow', sans-serif;
+}
+.uptime-bars { width: 100%; }
+.uptime-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.ubar-row { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 0.9rem; }
+.ubar-name { font-size: 0.78rem; font-weight: 600; color: var(--smoke); width: 60px; text-align: right; }
+.ubar-track { flex: 1; background: var(--border); height: 8px; }
+.ubar-fill { height: 100%; }
+.ubar-solar { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
+.ubar-wind  { background: linear-gradient(90deg, var(--teal-dk), var(--teal)); }
+.ubar-hybrid{ background: linear-gradient(90deg, var(--teal), var(--gold)); }
+.ubar-pct { font-size: 0.78rem; font-weight: 700; color: var(--smoke); width: 32px; }
+
+/* ─── SELF-RELIANCE SECTION ──────────────────────────────────── */
+.reliance {
+  background: var(--black);
+  position: relative; overflow: hidden;
+}
+.reliance::before {
+  content: 'SELF\ARELIANCE';
+  white-space: pre;
+  position: absolute;
+  right: -2rem; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18rem; font-weight: 800;
+  text-transform: uppercase; line-height: 0.85;
+  color: rgba(255,255,255,0.015);
+  pointer-events: none;
+  letter-spacing: -0.02em;
+}
+.reliance-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.reliance-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: start;
+}
+.reliance-left .lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 300; color: var(--white);
+  line-height: 1.5; margin-bottom: 2rem;
+}
+.reliance-left .lead em { color: var(--gold); font-style: italic; }
+.reliance-left p {
+  font-size: 0.95rem; color: var(--smoke);
+  line-height: 1.85; margin-bottom: 1.2rem;
+}
+.reliance-left p strong { color: var(--white); font-weight: 500; }
+
+.reliance-pillars { display: flex; flex-direction: column; gap: 1px; }
+.pillar {
+  background: var(--card);
+  padding: 1.8rem 2rem;
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.3s, background 0.3s;
+}
+.pillar:hover { border-left-color: var(--gold); background: #141d26; }
+.pillar-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.5rem; font-weight: 800;
+  color: var(--gold); line-height: 1; flex-shrink: 0;
+  opacity: 0.7;
+}
+.pillar h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.4rem; color: var(--white);
+}
+.pillar p { font-size: 0.83rem; color: var(--smoke); line-height: 1.65; }
+
+/* ─── AI SECTION ─────────────────────────────────────────────── */
+.ai-section {
+  background: #0a0f14;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.ai-inner { max-width: 1200px; margin: 0 auto; }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.ai-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #e8533a; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+.ai-label::before { content: '●'; font-size: 0.6rem; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.ai-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 800; text-transform: uppercase;
+  line-height: 0.9; margin-bottom: 1.5rem;
+}
+.ai-title span { color: #e8533a; }
+.ai-desc { color: var(--smoke); line-height: 1.8; font-size: 0.95rem; margin-bottom: 2rem; }
+.ai-desc strong { color: var(--white); font-weight: 500; }
+
+.ai-capabilities { display: flex; flex-direction: column; gap: 1px; }
+.ai-cap {
+  display: flex; align-items: flex-start; gap: 1.2rem;
+  padding: 1.3rem 1.5rem;
+  background: rgba(232,83,58,0.04);
+  border-left: 2px solid rgba(232,83,58,0.2);
+  transition: border-color 0.3s, background 0.3s;
+}
+.ai-cap:hover { border-left-color: #e8533a; background: rgba(232,83,58,0.08); }
+.ai-cap-dot { width: 8px; height: 8px; background: #e8533a; border-radius: 50%; margin-top: 5px; flex-shrink: 0; box-shadow: 0 0 6px rgba(232,83,58,0.6); }
+.ai-cap h4 { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.ai-cap p { font-size: 0.82rem; color: var(--smoke); }
+
+/* AI visual placeholder */
+.ai-visual {
+  aspect-ratio: 1;
+  max-width: 480px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.ai-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(232,83,58,0.12) 0%, transparent 65%),
+    linear-gradient(rgba(232,83,58,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,83,58,0.03) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
+}
+.ai-scan {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: rgba(232,83,58,0.6);
+  box-shadow: 0 0 12px rgba(232,83,58,0.4);
+  animation: scan 3s ease-in-out infinite;
+}
+@keyframes scan { 0%,100%{top:0} 50%{top:100%} }
+.ai-visual-icon { font-size: 4rem; position: relative; z-index: 1; margin-bottom: 1rem; }
+.ai-visual-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: #e8533a; position: relative; z-index: 1;
+}
+.ai-corners span {
+  position: absolute; width: 16px; height: 16px;
+  border-color: #e8533a; border-style: solid;
+  opacity: 0.5;
+}
+.ai-corners span:nth-child(1) { top: 1rem; left: 1rem; border-width: 1px 0 0 1px; }
+.ai-corners span:nth-child(2) { top: 1rem; right: 1rem; border-width: 1px 1px 0 0; }
+.ai-corners span:nth-child(3) { bottom: 1rem; left: 1rem; border-width: 0 0 1px 1px; }
+.ai-corners span:nth-child(4) { bottom: 1rem; right: 1rem; border-width: 0 1px 1px 0; }
+
+/* ─── CARBON SECTION ─────────────────────────────────────────── */
+.carbon { background: var(--deep); }
+.carbon-inner { max-width: 1200px; margin: 0 auto; }
+.carbon-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; }
+.carbon-metrics { display: flex; flex-direction: column; gap: 1px; }
+.cmetric {
+  background: var(--card);
+  padding: 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1rem;
+}
+.cmetric-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); margin-bottom: 0.4rem; }
+.cmetric-val { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 700; color: var(--teal); line-height: 1; }
+.cmetric-val.neg { color: #e8533a; }
+.cmetric-desc { font-size: 0.8rem; color: var(--smoke); margin-top: 0.3rem; }
+.cmetric-arrow { font-size: 1.8rem; color: var(--teal); opacity: 0.4; }
+.cmetric-arrow.down { color: #e8533a; transform: rotate(180deg); }
+.carbon-text p { font-size: 0.95rem; color: var(--smoke); line-height: 1.85; margin-bottom: 1.25rem; }
+.carbon-text p strong { color: var(--white); font-weight: 500; }
+.carbon-highlight {
+  background: linear-gradient(135deg, rgba(42,181,160,0.08), transparent);
+  border: 1px solid rgba(42,181,160,0.2);
+  padding: 1.8rem 2rem;
+  margin-top: 1.5rem;
+}
+.carbon-highlight p { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; color: var(--teal); line-height: 1.5; margin: 0; }
+
+/* ─── CLOSING / CTA ──────────────────────────────────────────── */
+.closing {
+  background: var(--black);
+  text-align: center; padding: 8rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,150,42,0.06) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.closing-eyebrow {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 2rem;
+}
+.closing-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 800; text-transform: uppercase;
+  line-height: 0.88; margin-bottom: 2rem;
+}
+.closing-title span { color: var(--gold); }
+.closing-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-style: italic; font-weight: 300;
+  color: var(--smoke); max-width: 700px;
+  margin: 0 auto 3.5rem; line-height: 1.6;
+}
+.closing-sub strong { color: var(--white); font-style: normal; font-weight: 400; }
+.closing-actions { display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.closing-made {
+  margin-top: 5rem;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--muted);
+}
+.closing-made span { color: var(--white); }
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+footer {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); text-decoration: none;
+}
+.footer-logo span { color: var(--gold); }
+footer p { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
+.footer-logo .fwin { color: #7eb8d4; }
+.footer-logo .fsol { color: #e8c97a; }
+
+/* ─── SCROLL ANIMATIONS ──────────────────────────────────────── */
+.js-ready [data-anim] {
+  opacity: 0;
+  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+              transform 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+.js-ready [data-anim="up"]    { transform: translateY(40px); }
+.js-ready [data-anim="down"]  { transform: translateY(-30px); }
+.js-ready [data-anim="left"]  { transform: translateX(-50px); }
+.js-ready [data-anim="right"] { transform: translateX(50px); }
+.js-ready [data-anim="scale"] { transform: scale(0.88); }
+.js-ready [data-anim="fade"]  { transform: none; }
+.js-ready [data-anim].in-view { opacity: 1 !important; transform: none !important; }
+
+.js-ready [data-delay="1"] { transition-delay: 0.10s; }
+.js-ready [data-delay="2"] { transition-delay: 0.20s; }
+.js-ready [data-delay="3"] { transition-delay: 0.32s; }
+.js-ready [data-delay="4"] { transition-delay: 0.46s; }
+.js-ready [data-delay="5"] { transition-delay: 0.60s; }
+
+.split-word {
+  display: inline-block; overflow: hidden;
+  vertical-align: bottom; margin-right: 0.18em;
+}
+.split-word .word-inner { display: inline-block; }
+.js-ready .split-word .word-inner {
+  transform: translateY(105%);
+  transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.js-ready .heading-split.in-view .split-word .word-inner { transform: translateY(0); }
+.js-ready .heading-split .split-word:nth-child(1) .word-inner { transition-delay: 0.00s; }
+.js-ready .heading-split .split-word:nth-child(2) .word-inner { transition-delay: 0.08s; }
+.js-ready .heading-split .split-word:nth-child(3) .word-inner { transition-delay: 0.16s; }
+.js-ready .heading-split .split-word:nth-child(4) .word-inner { transition-delay: 0.24s; }
+.js-ready .heading-split .split-word:nth-child(5) .word-inner { transition-delay: 0.32s; }
+.js-ready .heading-split .split-word:nth-child(6) .word-inner { transition-delay: 0.38s; }
+
+.ccard, .feat-card {
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+.ccard:hover, .feat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.pillar {
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.3s, background 0.3s;
+}
+.pillar:hover { transform: translateX(6px); }
+.ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+/* .reveal { } */
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); margin-top: 2rem; }
+  .sovereignty-grid, .product-hero-text, .reliance-grid,
+  .ai-grid, .carbon-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .problem-cards, .product-features { grid-template-columns: 1fr; }
+  .uptime-visual { grid-template-columns: 1fr; text-align: center; }
+  .closing { padding: 5rem 1.5rem; }
+  footer { padding: 2rem 1.5rem; }
+  .hero-corner { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main"><span class="win">Win</span><span class="sol">Sol</span></span>
+    <span class="nav-logo-sub">Hybrid</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sovereignty">Vision</a></li>
+    <li><a href="#product">The Product</a></li>
+    <li><a href="#reliance">Self-Reliance</a></li>
+    <li><a href="#ai">Intelligence</a></li>
+    <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-corner">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span>Atma Nirbhar Energy · Made in India</span></div>
+
+    <h1 class="hero-title">
+      <div>Power</div>
+      <div class="line-gold">Every</div>
+      <div class="line-outline">Where.</div>
+    </h1>
+
+    <p class="hero-sub">
+      A single smart pole. <strong>Wind and solar, unified.</strong>
+      Clean electricity — 24 hours, 7 days, anywhere a streetlight stands.
+      India's energy sovereignty doesn't begin at a distant power plant.
+      It begins here.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#product" class="btn-primary">Discover the Technology</a>
+      <a href="#contact" class="btn-ghost">Partner with Us</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-num">85%+</div>
+      <div class="hstat-label">India's Crude Imported</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">$137B</div>
+      <div class="hstat-label">Annual Import Bill</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">16.64%</div>
+      <div class="hstat-label">Grid Energy Lost in T&D</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">24/7</div>
+      <div class="hstat-label">WinSol Uptime</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ──────────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Energy Independence</span>
+    <span class="ticker-item">Made in India</span>
+    <span class="ticker-item">Zero Transmission Loss</span>
+    <span class="ticker-item">24/7 Clean Power</span>
+    <span class="ticker-item">Carbon Credit Generation</span>
+    <span class="ticker-item">AI Surveillance</span>
+    <span class="ticker-item">Atma Nirbhar Bharat</span>
+    <span class="ticker-item">VAWT + Solar Hybrid</span>
+    <span class="ticker-item">Smart Infrastructure</span>
+    <span class="ticker-item">Energy Independence</span>
+    <span class="ticker-item">Made in India</span>
+    <span class="ticker-item">Zero Transmission Loss</span>
+    <span class="ticker-item">24/7 Clean Power</span>
+    <span class="ticker-item">Carbon Credit Generation</span>
+    <span class="ticker-item">AI Surveillance</span>
+    <span class="ticker-item">Atma Nirbhar Bharat</span>
+    <span class="ticker-item">VAWT + Solar Hybrid</span>
+    <span class="ticker-item">Smart Infrastructure</span>
+  </div>
+</div>
+
+<!-- ── SOVEREIGNTY ─────────────────────────────────────────────── -->
+<section class="sovereignty" id="sovereignty">
+  <div class="sovereignty-grid">
+    <div class="sovereignty-text reveal">
+      <div class="section-tag">The Principle That Defines Nations</div>
+      <h2 class="section-heading">Energy<br>Independence<br>Is National<br>Independence.</h2>
+      <p class="lead">
+        This is not a philosophy. It is a pattern written into <strong>the rise of every major world power.</strong>
+      </p>
+      <p>The United States does not merely sustain itself — it exports surplus energy to Europe and Asia, and with it, its geopolitical leverage. When you are the supplier, you set the price. When you are the customer, you pay it.</p>
+      <p>Europe, once 65% energy self-sufficient, fell to 45% — and paid a devastating strategic price the moment Russian supply chains were severed. <strong>Dependency is vulnerability.</strong> The two are inseparable.</p>
+      <p>The lesson is unambiguous: when you control your energy, you control your future. When you depend on others for it, your growth — your inflation, your sovereignty — is negotiated on someone else's terms.</p>
+    </div>
+    <div class="country-cards reveal reveal-delay-2">
+      <div class="ccard">
+        <div class="ccard-flag">🇺🇸</div>
+        <div class="ccard-country">United States</div>
+        <div class="ccard-stat">Net Energy Exporter — Record High 2024</div>
+        <p>In 2024, US total energy exports reached 30.92 quadrillion BTU — the highest ever recorded. America exports ~30% of what it produces. Geopolitical influence follows the pipeline.</p>
+      </div>
+      <div class="ccard">
+        <div class="ccard-flag">🇷🇺</div>
+        <div class="ccard-country">Russia</div>
+        <div class="ccard-stat">Produces 1.7× What It Consumes Domestically</div>
+        <p>Holds the world's largest natural gas reserves, second-largest coal, eighth-largest oil. Energy resources historically fund up to 30% of Russia's federal budget. Surplus energy = strategic weapon.</p>
+      </div>
+      <div class="ccard">
+        <div class="ccard-flag">🇮🇳</div>
+        <div class="ccard-country">India</div>
+        <div class="ccard-stat">Imports 85%+ of Crude — $137B Annually</div>
+        <p>The world's third-largest energy consumer, yet almost entirely dependent on imported oil. Our growth, inflation, and current account balance are dictated by decisions made in Riyadh and Washington. <strong style="color: #d4962a;">This ends with WinSol.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ─────────────────────────────────────────────────── -->
+<section class="problem">
+  <div class="problem-inner">
+    <div class="problem-header reveal">
+      <div class="section-tag">India at the Crossroads</div>
+      <h2 class="section-heading">A Civilisational Giant,<br>Tethered to a Borrowed<br>Foundation.</h2>
+    </div>
+    <blockquote class="problem-quote reveal">
+      "We are generating clean energy and delivering it through a leaking pipe — paying for what vanishes before it ever reaches us."
+    </blockquote>
+    <div class="problem-cards">
+      <div class="pcard reveal">
+        <div class="pcard-num">01</div>
+        <div class="pcard-icon">⚡</div>
+        <h3>The Import Dependency</h3>
+        <p>Over 85% of India's crude oil is imported — spending approximately $137 billion every year on energy priced by markets we do not control, subject to disruptions we did not invite.</p>
+        <div class="pcard-data">$137B<span>spent annually on imports</span></div>
+      </div>
+      <div class="pcard reveal reveal-delay-1">
+        <div class="pcard-num">02</div>
+        <div class="pcard-icon">📡</div>
+        <h3>The Transmission Problem</h3>
+        <p>India's grid records 16.64% combined T&D losses — approximately 290 billion units of electricity generated and paid for, but never received. That's enough to power entire states, lost to the wire.</p>
+        <div class="pcard-data">16.64%<span>of electricity lost in transit</span></div>
+      </div>
+      <div class="pcard reveal reveal-delay-2">
+        <div class="pcard-num">03</div>
+        <div class="pcard-icon">🌍</div>
+        <h3>The Carbon Liability</h3>
+        <p>India's power sector is its largest emitter. With CCTS compliance beginning in 2026 and the EU's CBAM threatening export tariffs, carbon liability is no longer a future risk — it's a present one.</p>
+        <div class="pcard-data">1.4 GtCO₂e<span>from power sector annually</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCT ─────────────────────────────────────────────────── -->
+<section class="product" id="product">
+  <div class="product-inner">
+    <div class="section-tag reveal">The WinSol Answer</div>
+    <div class="product-hero-text">
+      <div class="reveal">
+        <h2 class="section-heading">Not a Larger Plant<br>on the Horizon.</h2>
+        <h2 class="section-heading" style="color: var(--gold);">A Smarter One,<br>at Your Door.</h2>
+      </div>
+      <div class="product-body reveal reveal-delay-1">
+        <p>WinSol Hybrid is a <strong>Made in India smart energy pole</strong> that vertically integrates a Vertical Axis Wind Turbine (VAWT) with high-efficiency solar panels on a single structure no larger than a standard streetlight.</p>
+        <p>No additional land. No grid dependency. No vulnerability to geopolitical shocks. <strong>If you have the space for a streetlight, you have the space for a 24/7 power station.</strong></p>
+        <p>The engineering insight is elegant: solar and wind are complementary, not competing. The sun powers the day. When clouds gather or night falls — precisely when solar drops — wind speeds rise. WinSol captures both, delivering <strong>seamless, uninterrupted clean energy</strong> that no single-source system can match.</p>
+      </div>
+    </div>
+
+    <div class="product-features reveal">
+      <div class="feat-card">
+        <div class="feat-icon">☀️</div>
+        <h3>Solar — Daytime</h3>
+        <p>High-efficiency photovoltaic panels generate peak output during clear daylight hours. Simultaneously, the VAWT provides a parallel generation stream from ambient wind — two sources, one structure.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🌀</div>
+        <h3>VAWT — Night & Storm</h3>
+        <p>Rain, monsoon, and nighttime are precisely when wind speeds increase. The VAWT's 360° omnidirectional design harvests energy from any direction — perfectly covering solar's downtime.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <h3>Smart Integration</h3>
+        <p>An onboard AI energy management system dynamically balances output from both sources, stores surplus intelligently, and can feed a local microgrid — making every pole a self-contained power plant.</p>
+      </div>
+    </div>
+
+    <div class="uptime-visual reveal">
+      <div>
+        <div class="uptime-number">24/7<sub>uptime</sub></div>
+        <p style="font-size:0.75rem;color:var(--muted);margin-top:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">365 days · rain or shine</p>
+      </div>
+      <div class="uptime-bars">
+        <div class="uptime-label">Energy source distribution by conditions</div>
+        <div class="ubar-row">
+          <div class="ubar-name">Solar</div>
+          <div class="ubar-track"><div class="ubar-fill ubar-solar" style="width:55%"></div></div>
+          <div class="ubar-pct">55%</div>
+        </div>
+        <div class="ubar-row">
+          <div class="ubar-name">Wind</div>
+          <div class="ubar-track"><div class="ubar-fill ubar-wind" style="width:30%"></div></div>
+          <div class="ubar-pct">30%</div>
+        </div>
+        <div class="ubar-row">
+          <div class="ubar-name">Hybrid</div>
+          <div class="ubar-track"><div class="ubar-fill ubar-hybrid" style="width:15%"></div></div>
+          <div class="ubar-pct">15%</div>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);margin-top:1rem;">Illustrative split — varies by geography & season</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SELF-RELIANCE ────────────────────────────────────────────── -->
+<section class="reliance" id="reliance">
+  <div class="reliance-inner">
+    <div class="reliance-grid">
+      <div class="reliance-left reveal">
+        <div class="section-tag">The Self-Reliance Shift</div>
+        <p class="lead">
+          Produce where you consume.<br>
+          Own what you produce.<br>
+          <em>Answer to no one for your power.</em>
+        </p>
+        <p>WinSol's most transformative idea is not its engineering — it is its <strong>philosophy</strong>. By generating electricity at the exact point of consumption, every pole eliminates transmission loss entirely.</p>
+        <p>Scaled across India's millions of existing streetlight poles — on highways, village roads, and city streets — WinSol does not merely add renewable capacity. It builds a <strong>distributed national energy grid, owned by the people of India.</strong></p>
+        <p>This is precisely the model that America and Russia have applied at the scale of a nation-state. WinSol makes it available at the scale of every single street. From a remote village in Jharkhand to a glass-tower campus in Bengaluru — <strong>the same pole serves every Indian equally.</strong></p>
+      </div>
+      <div class="reliance-pillars reveal reveal-delay-1">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div>
+            <h4>Zero Import Cost per kWh</h4>
+            <p>Every unit generated by WinSol costs India ₹0 in fuel imports. The source — sun and wind — is inexhaustible, freely available, and entirely domestic.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div>
+            <h4>Zero Transmission Loss</h4>
+            <p>Power generated at the point of consumption loses nothing to wires. 100% of the energy harvested is energy utilised — eliminating the 290 billion units India loses annually in transit.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div>
+            <h4>No Land Acquisition</h4>
+            <p>WinSol deploys wherever a streetlight already stands. India's existing pole infrastructure becomes the backbone of a new distributed national grid — zero land cost, zero displacement.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">04</div>
+          <div>
+            <h4>Carbon Credits, Not Deficits</h4>
+            <p>Every WinSol deployment displacing grid electricity earns India tradeable carbon credits under CCTS — transforming a liability into a growing national asset in the global green economy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AI SECTION ───────────────────────────────────────────────── -->
+<section class="ai-section" id="ai">
+  <div class="ai-inner">
+    <div class="ai-grid">
+      <div class="reveal">
+        <div class="ai-label">Live · AI-Powered</div>
+        <h2 class="ai-title">Not Just<br>Power.<br><span>Intelligence.</span></h2>
+        <p class="ai-desc">WinSol is not a power solution with a camera attached. It is India's next generation of <strong>smart public infrastructure.</strong> Each pole carries an edge-computing AI module — always on, always watching, always connected.</p>
+        <p class="ai-desc">Our streetlights have always illuminated India's roads. <strong>With WinSol, they will protect them too.</strong></p>
+        <div class="ai-capabilities">
+          <div class="ai-cap"><div class="ai-cap-dot"></div><div><h4>Facial Recognition</h4><p>Real-time matching against national databases for wanted individuals, missing persons, and restricted zone access.</p></div></div>
+          <div class="ai-cap"><div class="ai-cap-dot"></div><div><h4>Vehicle & ANPR Detection</h4><p>Automatic Number Plate Recognition for stolen vehicles, traffic monitoring, and border control — 24/7 in any light.</p></div></div>
+          <div class="ai-cap"><div class="ai-cap-dot"></div><div><h4>Threat & Weapon Detection</h4><p>AI models trained on real threat patterns dispatch instant alerts to the nearest authority the moment an incident is detected.</p></div></div>
+          <div class="ai-cap"><div class="ai-cap-dot"></div><div><h4>Cloud Command Network</h4><p>A unified secure dashboard lets authorities monitor any zone, access footage, and act on automated alerts — in real time.</p></div></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2" style="display:flex;justify-content:center;">
+        <div class="ai-visual">
+          <div class="ai-scan"></div>
+          <div class="ai-corners">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="ai-visual-icon">👁️</div>
+          <div class="ai-visual-label">AI Sentinel · Active</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CARBON ────────────────────────────────────────────────────── -->
+<section class="carbon">
+  <div class="carbon-inner">
+    <div class="section-tag reveal">Climate Finance Opportunity</div>
+    <h2 class="section-heading reveal" style="margin-bottom:3rem;">From Carbon<br>Deficit to Surplus.</h2>
+    <div class="carbon-grid">
+      <div class="carbon-metrics reveal">
+        <div class="cmetric">
+          <div>
+            <div class="cmetric-label">India Power Sector Emissions</div>
+            <div class="cmetric-val neg">1.4 GtCO₂e</div>
+            <div class="cmetric-desc">Annually — India's single largest source</div>
+          </div>
+          <div class="cmetric-arrow down">↑</div>
+        </div>
+        <div class="cmetric">
+          <div>
+            <div class="cmetric-label">CCTS Compliance Begins</div>
+            <div class="cmetric-val">FY 2026–27</div>
+            <div class="cmetric-desc">Nine energy-intensive sectors, mandatory credits</div>
+          </div>
+          <div class="cmetric-arrow">→</div>
+        </div>
+        <div class="cmetric">
+          <div>
+            <div class="cmetric-label">Global Carbon Market Value</div>
+            <div class="cmetric-val">$100B+</div>
+            <div class="cmetric-desc">Second consecutive year above $100 billion</div>
+          </div>
+          <div class="cmetric-arrow">↑</div>
+        </div>
+        <div class="cmetric">
+          <div>
+            <div class="cmetric-label">WinSol Carbon Position</div>
+            <div class="cmetric-val">Net Positive</div>
+            <div class="cmetric-desc">Every pole earns credits, not costs them</div>
+          </div>
+          <div class="cmetric-arrow">↑</div>
+        </div>
+      </div>
+      <div class="carbon-text reveal reveal-delay-1">
+        <p>India's Carbon Credit Trading Scheme (CCTS) begins full compliance in FY 2026–27. Each Carbon Credit Certificate represents one tonne of CO₂ avoided. Every WinSol deployment that displaces grid electricity <strong>directly generates tradeable carbon credits.</strong></p>
+        <p>With the EU's Carbon Border Adjustment Mechanism (CBAM) threatening tariffs on high-carbon exports, India's industries face urgent pressure to decarbonise. WinSol turns that pressure into profit — operators don't purchase credits to offset penalties. <strong>They sell them.</strong></p>
+        <p>A new revenue stream, on top of energy savings. Available to industries, municipalities, logistics companies, and anyone with a pole and ambition.</p>
+        <div class="carbon-highlight">
+          <p>"Rather than being a net buyer in the global carbon market, India becomes a net seller — and WinSol is the infrastructure that makes that shift possible."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLOSING CTA ──────────────────────────────────────────────── -->
+<section class="closing" id="contact">
+  <div class="closing-eyebrow">The Invitation</div>
+  <h2 class="closing-title">
+    Power India.<br><span>Own the Future.</span>
+  </h2>
+  <p class="closing-sub">
+    America rose to dominance because it controlled its energy destiny.
+    Russia wields influence because it never had to ask for power.
+    India's moment is not waiting on a distant policy reform.<br>
+    <strong>It is standing on every street corner, waiting to be switched on.</strong>
+  </p>
+  <div class="closing-actions">
+    <a href="/cdn-cgi/l/email-protection#b0d8d5dcdcdff0c7d9dec3dfdcd8c9d2c2d9d49ed9de" class="btn-primary">Request a Partnership Briefing</a>
+    <a href="#product" class="btn-ghost">View the Technology</a>
+  </div>
+  <div class="closing-made">
+    <span>WinSol Hybrid</span> · Made in India 🇮🇳 · Built for the World
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────────────── -->
+<footer>
+  <a href="#" class="footer-logo"><span class="fwin">Win</span><span class="fsol">Sol</span> Hybrid</a>
+  <p>© 2025 WinSol Hybrid Energy Systems · Confidential</p>
+  <p>Atma Nirbhar Bharat · Smart Cities Mission · CCTS Ready</p>
+</footer>
+
+<!-- ── SCRIPTS ──────────────────────────────────────────────────── -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+function lerpCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(lerpCursor);
+}
+lerpCursor();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '16px';
+    cursor.style.height = '16px';
+    ring.style.width = '52px';
+    ring.style.height = '52px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '8px';
+    cursor.style.height = '8px';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+  });
+});
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Animation engine ────────────────────────────────────────
+document.body.classList.add('js-ready');
+
+// 1. Word-split headings for stagger reveal
+document.querySelectorAll('.section-heading').forEach(function(el) {
+  if (el.closest('.hero')) return;
+  el.classList.add('heading-split');
+  var parts = el.innerHTML.split(/(<br\s*[/]?>)/gi);
+  el.innerHTML = parts.map(function(part) {
+    if (/^<br/i.test(part)) return part;
+    return part.trim().split(/\s+/).filter(Boolean).map(function(w) {
+      return '<span class="split-word"><span class="word-inner">' + w + '</span></span>';
+    }).join(' ');
+  }).join('');
+});
+
+// 2. Upgrade .reveal to data-anim
+document.querySelectorAll('.reveal').forEach(function(el) {
+  if (!el.dataset.anim) el.dataset.anim = 'up';
+  if (el.classList.contains('reveal-delay-1')) el.dataset.delay = '1';
+  if (el.classList.contains('reveal-delay-2')) el.dataset.delay = '2';
+  if (el.classList.contains('reveal-delay-3')) el.dataset.delay = '3';
+});
+
+// 3. Directional assignments
+var dirMap = [
+  ['.sovereignty-text', 'left'],
+  ['.country-cards',    'right'],
+  ['.reliance-left',    'left'],
+  ['.reliance-pillars', 'right'],
+  ['.ai-visual',        'right'],
+  ['.carbon-text',      'right'],
+  ['.carbon-metrics',   'left'],
+  ['.product-body',     'right'],
+  ['.uptime-visual',    'up'],
+  ['.section-tag',      'fade'],
+  ['.problem-quote',    'fade'],
+  ['.closing-eyebrow',  'fade'],
+  ['.closing-title',    'up'],
+  ['.closing-sub',      'up'],
+  ['.closing-actions',  'up'],
+  ['.closing-made',     'fade'],
+];
+dirMap.forEach(function(row) {
+  document.querySelectorAll(row[0]).forEach(function(el, i) {
+    el.dataset.anim = row[1];
+    if (i > 0 && !el.dataset.delay) el.dataset.delay = String(Math.min(i, 5));
+  });
+});
+
+// 4. Stagger card groups
+['.hstat','.pcard','.feat-card','.ccard'].forEach(function(sel) {
+  document.querySelectorAll(sel).forEach(function(el, i) {
+    el.dataset.anim = 'up';
+    el.dataset.delay = String(Math.min(i + 1, 5));
+  });
+});
+document.querySelectorAll('.pillar').forEach(function(el, i) {
+  el.dataset.anim = 'left';
+  el.dataset.delay = String(Math.min(i + 1, 5));
+});
+document.querySelectorAll('.ai-cap').forEach(function(el, i) {
+  el.dataset.anim = 'up';
+  el.dataset.delay = String(Math.min(i + 1, 5));
+});
+
+// 5. Stat counters
+function animateCount(el) {
+  var target = parseFloat(el.dataset.count);
+  var isFloat = el.dataset.count.indexOf('.') !== -1;
+  var suffix = el.dataset.suffix || '';
+  var prefix = el.dataset.prefix || '';
+  var duration = 1600;
+  var startTime = null;
+  function step(now) {
+    if (!startTime) startTime = now;
+    var p = Math.min((now - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    var val = target * ease;
+    el.textContent = prefix + (isFloat ? val.toFixed(2) : Math.floor(val)) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = prefix + (isFloat ? target.toFixed(2) : Math.floor(target)) + suffix;
+  }
+  requestAnimationFrame(step);
+}
+var statDefs = [
+  {sel:'.hstat:nth-child(1) .hstat-num', count:'85',    suffix:'%+'},
+  {sel:'.hstat:nth-child(2) .hstat-num', count:'137',   prefix:'$', suffix:'B'},
+  {sel:'.hstat:nth-child(3) .hstat-num', count:'16.64', suffix:'%'},
+];
+statDefs.forEach(function(def) {
+  var el = document.querySelector(def.sel);
+  if (!el) return;
+  el.dataset.count = def.count;
+  if (def.prefix) el.dataset.prefix = def.prefix;
+  if (def.suffix)  el.dataset.suffix  = def.suffix;
+  var obs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) { animateCount(el); obs.disconnect(); }
+  }, {threshold:0.5});
+  obs.observe(el.closest('.hstat'));
+});
+
+// 6. Main reveal observer
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in-view');
+    revealObs.unobserve(e.target);
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -30px 0px'});
+
+document.querySelectorAll('[data-anim], .heading-split').forEach(function(el) {
+  revealObs.observe(el);
+});
+
+// 7. Parallax on hero
+var heroGrid  = document.querySelector('.hero-grid');
+var heroGlow  = document.querySelector('.hero-glow');
+var heroGlow2 = document.querySelector('.hero-glow-2');
+window.addEventListener('scroll', function() {
+  var sy = window.scrollY;
+  if (heroGrid)  heroGrid.style.transform  = 'translateY(' + (sy * 0.18) + 'px)';
+  if (heroGlow)  heroGlow.style.transform  = 'translate(-50%, calc(-50% + ' + (sy * 0.12) + 'px))';
+  if (heroGlow2) heroGlow2.style.transform = 'translate(-50%, calc(-50% + ' + (sy * 0.08) + 'px))';
+}, {passive:true});
+</script>
+</body>
+</html>
